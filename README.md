@@ -8,6 +8,31 @@ This chatbot is designed to assist users in the healthcare domain by providing p
 [!NOTE]
 When you open this project in GitHub Codespaces using the button above, the development environment is automatically set up for you. A virtual environment is created and all required Python packages from `requirements.txt` are installed automatically, so you can start coding right away without any manual setup.
 
+# Environment Variables (.env file)
+
+Create a `.env` file in the project root with the following format:
+
+```env
+# Path to the raw data CSV file
+INPUT_LOAD = "/workspaces/medicortex.ai/data/rawdata.csv"
+
+# Directory to store model objects
+OUTPUT_DIR = "/workspaces/medicortex.ai/model_objects"
+
+# Paths to FAISS index files
+DOCTOR_INDEX_PATH = "/workspaces/medicortex.ai/model_objects/doctor_index.faiss"
+PATIENT_INDEX_PATH = "/workspaces/medicortex.ai/model_objects/patient_index.faiss"
+LOCATION_INDEX_PATH = "/workspaces/medicortex.ai/model_objects/desc_index.faiss"
+
+# OpenAI API Key (replace with your own key)
+OPENAI_API_KEY = "sk-..."
+```
+
+**Note:**
+- All paths should be absolute or relative to the project root.
+- Never share your OpenAI API key publicly.
+
+
 # downloaddata.py
 Use this python script to download the data from kagglehub onto your data folder on project repository. 
 

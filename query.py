@@ -1,17 +1,27 @@
 import os
+import joblib
 from dotenv import load_dotenv
 import openai
 
-load_dotenv()
+import index_embedding
+from index_embedding import *
+import pandas as pd
+
+# Ensure embed_text_list is imported or defined
+from index_embedding import embed_text_list
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
+data = pd.read_csv("data/rawdata.csv")
+index_path = os.getenv("DOCTOR_INDEX_PATH")
 
-def get_answer(query):
+def get_answer(data,query,index_path = None):
 
-    query_embedding = sentence_embedding([query])
-    index_path = os.getenv("DOCTOR_INDEX_PATH")
+    query_embedding = embed_text_list([query])
+    if index_path is None:
+        raise ValueError("index_path must be provided and cannot be None")
     index = joblib.load(index_path)
     D, I = index.search(query_embedding, k=1)
-    answer = df.iloc[I[0][0]]['Doctor Response']
+    answer = data.iloc[I[0][0]]['Doctor Response']
 
     prompt = f"""You are a helpful medical assistant. The patient asked: "{query}". 
     Based on the following doctor's response, search the internet, 
@@ -23,3 +33,8 @@ def get_answer(query):
                   {"role": "user", "content": prompt}]
     )
     return response['choices'][0]['message']['content']
+
+
+get_answer(data,
+"I have a headache and fever, what should I do?",
+index_path = index_path)
